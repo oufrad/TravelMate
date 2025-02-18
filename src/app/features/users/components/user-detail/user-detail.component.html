@@ -1,0 +1,108 @@
+<ng-container [formGroup]="userForm"> 
+  @if (!shouldShowForm()) {
+    <!-- Display Mode -->
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <p class="whitespace-no-wrap">{{userValue?.id}}</p>
+    </td>
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <div class="flex items-center">
+        <div class="h-10 w-10 flex-shrink-0">
+          <img class="h-full w-full rounded-full" src="./../../../../../assets/lelouch.jpg" [alt]="userValue?.name" />
+        </div>
+        <div class="ml-3">
+          <p class="whitespace-no-wrap">{{userValue?.name}}</p>
+        </div>
+      </div>
+    </td>
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <p class="whitespace-no-wrap">{{userValue?.role?.name}}</p>
+    </td>
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <p class="whitespace-no-wrap">{{userValue?.email}}</p>
+    </td>
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <span [class]="getStatusClass()">{{userValue?.status?.name}}</span>
+    </td>
+  } @else {
+    <!-- Edit Mode -->
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <p class="whitespace-no-wrap">{{userValue?.id}}</p>
+    </td>
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <div class="flex items-center">
+        <div class="h-10 w-10 flex-shrink-0">
+          <img class="h-full w-full rounded-full" src="./../../../../../assets/lelouch.jpg" [alt]="userValue?.name" />
+        </div>
+        <div class="ml-3">
+          <input 
+            formControlName="name"
+            type="text" 
+            class="rounded border px-2 py-1 text-sm"
+          />
+        </div>
+      </div>
+    </td>
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <select 
+        formControlName="role"
+        class="rounded border px-2 py-1 text-sm w-full"
+      >
+        @for (role of roleOptions; track $index) {
+          <option [value]="role.value">
+            {{ role.name }}
+          </option>
+        }
+      </select>
+    </td>
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <input 
+            formControlName="email"
+            type="text" 
+            class="rounded border px-2 py-1 text-sm"
+          />
+    </td>
+    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+      <select 
+        formControlName="status"
+        class="rounded border px-2 py-1 text-sm w-full"
+      >
+      @for (status of statusOptions; track $index) {
+        <option [value]="status.value">
+          {{ status.name }}
+        </option>
+      }
+      </select>
+    </td>
+  }
+
+  <!-- Actions column always visible -->
+  <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+    <div class="flex gap-2">
+      @if (shouldShowForm()) {
+        <button 
+          type="submit"
+          [disabled]="!userForm.valid"
+          (click)="onSubmitForm()"
+          class="rounded-md bg-green-600 px-3 py-1 text-xs font-semibold text-white hover:bg-green-700">
+          Save
+        </button>
+        <button 
+          (click)="onCancelEditing()"
+          class="rounded-md bg-gray-500 px-3 py-1 text-xs font-semibold text-white hover:bg-gray-600">
+          Cancel
+        </button>
+      } @else {
+        <button 
+          (click)="onChangeToEdit()"
+          class="rounded-md bg-blue-600 px-3 py-1 text-xs font-semibold text-white hover:bg-blue-700">
+          Edit
+        </button>
+        <button 
+          (click)="onDeleteUser()"
+          class="rounded-md bg-red-600 px-3 py-1 text-xs font-semibold text-white hover:bg-red-700">
+          Delete
+        </button>
+      }
+    </div>
+  </td>
+</ng-container> 
